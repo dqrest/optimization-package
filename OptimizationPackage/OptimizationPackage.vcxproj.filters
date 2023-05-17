@@ -48,10 +48,10 @@
     <ClCompile Include="..\src\alglib\solvers.cpp">
       <Filter>Source Files\alglib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\alg-function\alg-function.cpp">
+    <ClCompile Include="..\src\alg-function\alg-linear-function.cpp">
       <Filter>Source Files\alg-function</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\alg-function\alg-linear-function.cpp">
+    <ClCompile Include="..\src\alg-function\alg-linear-constraint.cpp">
       <Filter>Source Files\alg-function</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,6 +81,9 @@
       <Filter>Header Files\alg-function</Filter>
     </ClInclude>
     <ClInclude Include="..\src\alg-function\alg-linear-function.h">
+      <Filter>Header Files\alg-function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\alg-function\alg-linear-constraint.h">
       <Filter>Header Files\alg-function</Filter>
     </ClInclude>
   </ItemGroup>

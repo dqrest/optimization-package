@@ -1,5 +1,5 @@
 #ifndef _alg_linear_function_h
-#define _alg_linear__function_h
+#define _alg_linear_function_h
 
 #include <vector>
 #include <iostream>
@@ -16,8 +16,8 @@ public:
     AlgLinearFunction(vector<T>);
     vector<T> SubgradientAt(vector<T> x);   
     T ValueAt(vector<T> x);
-    void Print();
-    void Inverse();
+    virtual void Print();
+    virtual void Inverse();
 };
 
 
