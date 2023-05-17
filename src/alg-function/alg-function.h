@@ -15,18 +15,4 @@ public:
     virtual void Inverse() = 0;
 };
 
-template<typename T> class AlgLinearFunction : public AlgFunction <T>
-{
-protected:
-    vector<T> c = {};
-public:
-    AlgLinearFunction();
-    AlgLinearFunction(vector<T>);
-    vector<T> SubgradientAt(vector<T> x);   
-    T ValueAt(vector<T> x);
-    void Print();
-    void Inverse();
-};
-
-
 #endif // !_alg_function_h

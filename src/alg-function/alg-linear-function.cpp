@@ -1,4 +1,4 @@
-#include "alg-function.h"
+#include "alg-linear-function.h"
 
 template<typename T>
 AlgLinearFunction<T>::AlgLinearFunction()
