@@ -117,7 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\WORK\optimization-package\src\alglib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\WORK\optimization-package\src\alglib;D:\WORK\optimization-package\src\alg-function;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\alg-function\alg-function.cpp" />
     <ClCompile Include="..\src\alglib\alglibinternal.cpp" />
     <ClCompile Include="..\src\alglib\alglibmisc.cpp" />
     <ClCompile Include="..\src\alglib\ap.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="OptimizationPackage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\alg-function\alg-function.h" />
     <ClInclude Include="..\src\alglib\alglibinternal.h" />
     <ClInclude Include="..\src\alglib\alglibmisc.h" />
     <ClInclude Include="..\src\alglib\ap.h" />

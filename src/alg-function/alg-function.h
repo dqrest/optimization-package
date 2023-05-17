@@ -1,0 +1,32 @@
+#ifndef _alg_function_h
+#define _alg_function_h
+
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+template <typename T> class AlgFunction
+{
+public:
+    virtual vector<T> SubgradientAt(vector<T> x) = 0;    
+    virtual T ValueAt(vector<T> x) = 0;    
+    virtual void Print() = 0;
+    virtual void Inverse() = 0;
+};
+
+template<typename T> class AlgLinearFunction : public AlgFunction <T>
+{
+protected:
+    vector<T> c = {};
+public:
+    AlgLinearFunction();
+    AlgLinearFunction(vector<T>);
+    vector<T> SubgradientAt(vector<T> x);   
+    T ValueAt(vector<T> x);
+    void Print();
+    void Inverse();
+};
+
+
+#endif // !_alg_function_h

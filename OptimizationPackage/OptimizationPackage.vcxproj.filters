@@ -19,6 +19,12 @@
     <Filter Include="Source Files\alglib">
       <UniqueIdentifier>{b7657bd8-50d1-4f07-be62-253e21ad0891}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\alg-function">
+      <UniqueIdentifier>{21d8d289-6bb2-4887-99e6-7ba97c25ce68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\alg-function">
+      <UniqueIdentifier>{d3fa2aab-3dac-4a8f-a585-a73470b25502}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OptimizationPackage.cpp">
@@ -42,6 +48,9 @@
     <ClCompile Include="..\src\alglib\solvers.cpp">
       <Filter>Source Files\alglib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\alg-function\alg-function.cpp">
+      <Filter>Source Files\alg-function</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\alglib\stdafx.h">
@@ -64,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="..\src\alglib\solvers.h">
       <Filter>Header Files\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\alg-function\alg-function.h">
+      <Filter>Header Files\alg-function</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
