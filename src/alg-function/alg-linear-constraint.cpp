@@ -1,13 +1,13 @@
 #include "alg-linear-constraint.h"
 
 template<typename T>
-AlgLinearConstraint<T>::AlgLinearConstraint(): AlgLinearFunction<T>()
+AlgLinearConstraint<T>::AlgLinearConstraint() : AlgLinearFunction<T>()
 {
 
 }
 
 template<typename T>
-AlgLinearConstraint<T>::AlgLinearConstraint(vector<T> v, T b): AlgLinearFunction<T>(v)
+AlgLinearConstraint<T>::AlgLinearConstraint(vector<T> v, T b) : AlgLinearFunction<T>(v)
 {
 	this->b = b;
 }
@@ -33,3 +33,37 @@ void AlgLinearConstraint<T>::Inverse()
 	AlgLinearFunction<T>::Inverse();
 	this->b = -this->b;
 }
+
+
+template<typename T>
+AlgBoxConstraint<T>::AlgBoxConstraint<T>(int dimension, int ind, vector<string> b) : AlgLinearFunction<T>()
+{
+	if (&b == NULL) return;
+	if (ind > 0 && ind <= dimension && b.size() == 2)
+	{
+		this->_ind = ind;
+		this->_lower = b[0];
+		this->_upper = b[1];
+		this->_dimension = dimension;
+		return;
+	}
+}
+
+
+template<typename T>
+void AlgBoxConstraint<T>::Print()
+{
+	cout << this->_lower << " <= " << "x[" << this->_ind << "]" << " <= " << this->_upper;
+}
+
+template<typename T>
+int AlgBoxConstraint<T>::GetInd()
+{
+	return this->_ind;
+}
+
+//template<typename T>
+// AlgBoxConstraint<T>::GetInd()
+//{
+//	return this->_ind;
+//}

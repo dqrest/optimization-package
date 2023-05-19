@@ -18,5 +18,34 @@ public:
     void Inverse();    
 };
 
+template<typename T> class AlgBoxConstraint : public AlgLinearFunction<T>
+{
+private:
+	int _ind = -1;
+	string _lower;
+	string _upper;
+	int _dimension = -1;
+	vector<T> c = {};
+public:
+	AlgBoxConstraint<T>(int dimension, int ind, vector<string> b) : AlgLinearFunction<T>();	
+
+	void Print();
+	
+	int GetInd();
+	
+	double getLower();
+	/*{
+		return this->_lower == "-inf"
+			? -HUGE_VAL
+			: stod(this->_lower);
+	}*/
+	double getUpper();
+	/*{
+		return this->_upper == "+inf"
+			? HUGE_VAL
+			: stod(this->_upper);
+	}*/
+};
+
 
 #endif // !_alg_function_h
