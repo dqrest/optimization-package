@@ -6,9 +6,13 @@
 
 using namespace std;
 
-template <typename T> class AlgFunction
+template <typename T>
+class AlgFunction
 {
 public:
+    AlgFunction() 
+    {
+    };
     virtual vector<T> SubgradientAt(vector<T> x) = 0;    
     virtual T ValueAt(vector<T> x) = 0;    
     virtual void Print() = 0;
