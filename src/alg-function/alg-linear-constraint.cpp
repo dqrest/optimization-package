@@ -62,8 +62,18 @@ int AlgBoxConstraint<T>::GetInd()
 	return this->_ind;
 }
 
-//template<typename T>
-// AlgBoxConstraint<T>::GetInd()
-//{
-//	return this->_ind;
-//}
+template<typename T>
+double AlgBoxConstraint<T>::GetLower()
+{
+	return this->_lower == "-inf"
+		? -HUGE_VAL
+		: stod(this->_lower);
+}
+
+template<typename T>
+double AlgBoxConstraint<T>::GetUpper()
+{
+	return this->_upper == "+inf"
+		? HUGE_VAL
+		: stod(this->_upper);
+}

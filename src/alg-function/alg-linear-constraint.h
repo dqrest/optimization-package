@@ -7,7 +7,8 @@
 
 using namespace std;
 
-template<typename T> class AlgLinearConstraint : public AlgLinearFunction <T>
+template<typename T> 
+class AlgLinearConstraint : public AlgLinearFunction <T>
 {
 protected:
     T b;
@@ -18,7 +19,8 @@ public:
     void Inverse();    
 };
 
-template<typename T> class AlgBoxConstraint : public AlgLinearFunction<T>
+template<typename T> 
+class AlgBoxConstraint : public AlgLinearFunction<T>
 {
 private:
 	int _ind = -1;
@@ -27,24 +29,11 @@ private:
 	int _dimension = -1;
 	vector<T> c = {};
 public:
-	AlgBoxConstraint<T>(int dimension, int ind, vector<string> b) : AlgLinearFunction<T>();	
-
-	void Print();
-	
-	int GetInd();
-	
-	double getLower();
-	/*{
-		return this->_lower == "-inf"
-			? -HUGE_VAL
-			: stod(this->_lower);
-	}*/
-	double getUpper();
-	/*{
-		return this->_upper == "+inf"
-			? HUGE_VAL
-			: stod(this->_upper);
-	}*/
+	AlgBoxConstraint<T>(int dimension, int ind, vector<string> b);	
+	void Print();	
+	int GetInd();	
+	double GetLower();	
+	double GetUpper();	
 };
 
 
