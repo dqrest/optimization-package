@@ -51,7 +51,13 @@
     <ClCompile Include="..\src\alg-function\alg-linear-function.cpp">
       <Filter>Source Files\alg-function</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\alg-function\alg-linear-constraint.cpp">
+    <ClCompile Include="..\src\alg-function\optimization-solver.cpp">
+      <Filter>Source Files\alg-function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\alg-function\alg-constraint.cpp">
+      <Filter>Source Files\alg-function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\alg-function\alg-simple-quadratic-function.cpp">
       <Filter>Source Files\alg-function</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,7 +89,13 @@
     <ClInclude Include="..\src\alg-function\alg-linear-function.h">
       <Filter>Header Files\alg-function</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\alg-function\alg-linear-constraint.h">
+    <ClInclude Include="..\src\alg-function\optimization-solver.h">
+      <Filter>Header Files\alg-function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\alg-function\alg-constraint.h">
+      <Filter>Header Files\alg-function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\alg-function\alg-simple-quadratic-function.h">
       <Filter>Header Files\alg-function</Filter>
     </ClInclude>
   </ItemGroup>

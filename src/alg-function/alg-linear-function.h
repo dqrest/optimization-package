@@ -14,6 +14,7 @@ protected:
 public:
     AlgLinearFunction();
     AlgLinearFunction(vector<T>);
+    ~AlgLinearFunction();
     vector<T> SubgradientAt(vector<T> x);   
     T ValueAt(vector<T> x);
     virtual void Print();

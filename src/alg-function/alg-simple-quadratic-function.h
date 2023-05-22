@@ -17,6 +17,7 @@ protected:
 	vector<T> b = {};
 public:    
 	AlgSimpleQuadraticFunction(vector<T> k, vector<T> a, vector<T> b);
+	~AlgSimpleQuadraticFunction();
 	virtual vector<T> SubgradientAt(vector<T> x);
 	virtual T ValueAt(vector<T> x);
 	virtual void Print();

@@ -13,6 +13,14 @@ AlgSimpleQuadraticFunction<T>::AlgSimpleQuadraticFunction(vector<T> k, vector<T>
 }
 
 template<typename T>
+AlgSimpleQuadraticFunction<T>::~AlgSimpleQuadraticFunction()
+{
+	this->k.clear();
+	this->a.clear();
+	this->b.clear();
+}
+
+template<typename T>
 vector<T> AlgSimpleQuadraticFunction<T>::SubgradientAt(vector<T> x)
 {	
 	vector<T> subgradient = {};

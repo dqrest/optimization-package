@@ -3,7 +3,6 @@
 template<typename T>
 AlgLinearFunction<T>::AlgLinearFunction()
 {
-
 }
 
 template<typename T>
@@ -16,6 +15,12 @@ template<typename T>
 vector<T> AlgLinearFunction<T>::SubgradientAt(vector<T> x)
 {
 	return this->c;
+}
+
+template<typename T>
+AlgLinearFunction<T>::~AlgLinearFunction()
+{
+	this->c.clear();
 }
 
 template<typename T>

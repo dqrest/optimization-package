@@ -141,8 +141,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\alg-function\alg-linear-constraint.cpp" />
+    <ClCompile Include="..\src\alg-function\alg-constraint.cpp" />
     <ClCompile Include="..\src\alg-function\alg-linear-function.cpp" />
+    <ClCompile Include="..\src\alg-function\alg-simple-quadratic-function.cpp" />
+    <ClCompile Include="..\src\alg-function\optimization-solver.cpp" />
     <ClCompile Include="..\src\alglib\alglibinternal.cpp" />
     <ClCompile Include="..\src\alglib\alglibmisc.cpp" />
     <ClCompile Include="..\src\alglib\ap.cpp" />
@@ -152,9 +154,11 @@
     <ClCompile Include="OptimizationPackage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\alg-function\alg-constraint.h" />
     <ClInclude Include="..\src\alg-function\alg-function.h" />
-    <ClInclude Include="..\src\alg-function\alg-linear-constraint.h" />
     <ClInclude Include="..\src\alg-function\alg-linear-function.h" />
+    <ClInclude Include="..\src\alg-function\alg-simple-quadratic-function.h" />
+    <ClInclude Include="..\src\alg-function\optimization-solver.h" />
     <ClInclude Include="..\src\alglib\alglibinternal.h" />
     <ClInclude Include="..\src\alglib\alglibmisc.h" />
     <ClInclude Include="..\src\alglib\ap.h" />
