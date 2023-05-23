@@ -26,7 +26,7 @@ void AlgConstraint<T>::PrintConstraintType()
 template<typename T>
 void AlgConstraint<T>::Print()
 {
-	if(this->f != NULL)
+	if (this->f != NULL)
 		this->f->Print();
 	this->PrintConstraintType();
 	cout << this->b;
@@ -50,8 +50,28 @@ void AlgConstraint<T>::InverseConstraintType()
 template<typename T>
 void AlgConstraint<T>::Inverse()
 {
-	if(this->f != NULL)
+	if (this->f != NULL)
 		this->f->Inverse();
 	this->InverseConstraintType();
-	this->b = -this->b;	
+	this->b = -this->b;
+}
+
+template<typename T>
+bool AlgConstraint<T>::BelongsTo(vector<T> point)
+{
+	return this->f == NULL
+		? false
+		: this->f->ValueAt(point) <= this->b;	
+}
+
+template<typename T>
+T AlgConstraint<T>::ValueAt(vector<T> point)
+{
+	return this->f->ValueAt(point) - this->b;			
+}
+
+template<typename T>
+vector<T> AlgConstraint<T>::SubgradientAt(vector<T> point)
+{
+	return this->f->SubgradientAt(point);
 }

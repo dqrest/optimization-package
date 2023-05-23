@@ -28,6 +28,7 @@ public:
 	void SetLowerBox(vector<T> lb);
 	void SetUpperBox(vector<T> ub);
 	virtual void Minimize() = 0;
+	virtual bool IsStopped() = 0;	
 };
 
 template<typename T>
@@ -37,6 +38,9 @@ public:
 	CuttingPlaneMethodWithFeasibleSetApproximationSolver(unsigned int dimension, T epsilon);
 	~CuttingPlaneMethodWithFeasibleSetApproximationSolver();
 	void Minimize();
+	virtual bool IsStopped();
+	virtual vector<size_t> GetActiveConstraintsToCut(vector<T> point);	
+	virtual void CreateCuttingPlane(vector<T> point, AlgConstraint<T>* constraint);
 };
 
 template<typename T>
@@ -47,8 +51,14 @@ void printArray(size_t size, T* array)
 	}
 }
 
-
-
-
+template<typename T>
+T innerProduct(vector<T> x, vector<T> y)
+{
+	if (x.size() != y.size()) return T();
+	T sum = T();
+	for (size_t i = 0; i < x.size(); i++)
+		sum += x[i] * y[i];
+	return sum;
+}
 
 #endif // !_optimization_solver_h

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-enum EConstraintType{
+enum class EConstraintType{
 	LE = 0, // left less or equal (i.e. <=)
 	L = 1,  // left less (i.e. < )
 	RE = 2, // right more or equal (i.e. >=)
@@ -19,6 +19,7 @@ template<typename T>
 class AlgConstraint
 {
 protected:
+	// Ограничение f <= b
 	T b;
 	AlgFunction<T>* f;
 	EConstraintType cType;
@@ -28,6 +29,12 @@ public:
 	void PrintConstraintType();
 	void Inverse();
 	void InverseConstraintType();
+	bool BelongsTo(vector<T> point);	
+	T ValueAt(vector<T> point);
+	vector<T> SubgradientAt(vector<T> point);
 };
+
+
+
 
 #endif // !_alg_constraint_h
