@@ -48,16 +48,16 @@
     <ClCompile Include="..\src\alglib\solvers.cpp">
       <Filter>Source Files\alglib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\alg-function\alg-linear-function.cpp">
-      <Filter>Source Files\alg-function</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\alg-function\optimization-solver.cpp">
-      <Filter>Source Files\alg-function</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\alg-function\alg-constraint.cpp">
       <Filter>Source Files\alg-function</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\alg-function\alg-linear-function.cpp">
+      <Filter>Source Files\alg-function</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\alg-function\alg-simple-quadratic-function.cpp">
+      <Filter>Source Files\alg-function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\alg-function\optimization-solver.cpp">
       <Filter>Source Files\alg-function</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,19 +83,19 @@
     <ClInclude Include="..\src\alglib\solvers.h">
       <Filter>Header Files\alglib</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\alg-function\alg-constraint.h">
+      <Filter>Header Files\alg-function</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\alg-function\alg-function.h">
       <Filter>Header Files\alg-function</Filter>
     </ClInclude>
     <ClInclude Include="..\src\alg-function\alg-linear-function.h">
       <Filter>Header Files\alg-function</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\alg-function\optimization-solver.h">
-      <Filter>Header Files\alg-function</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\alg-function\alg-constraint.h">
-      <Filter>Header Files\alg-function</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\alg-function\alg-simple-quadratic-function.h">
+      <Filter>Header Files\alg-function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\alg-function\optimization-solver.h">
       <Filter>Header Files\alg-function</Filter>
     </ClInclude>
   </ItemGroup>
