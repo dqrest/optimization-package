@@ -19,7 +19,7 @@ int main()
 {
 
 	vector<ldouble> v = { -1, -1 };
-	AlgLinearFunction<ldouble> *objectiveFunction = new AlgLinearFunction<ldouble>(v);
+	AlgLinearFunction<ldouble>* objectiveFunction = new AlgLinearFunction<ldouble>(v);
 	objectiveFunction->Print();
 	cout << "\n";
 
@@ -27,10 +27,12 @@ int main()
 	vector<ldouble> a1 = { 1, 1 };
 	vector<ldouble> b1 = { 1, 0 };
 	AlgSimpleQuadraticFunction<ldouble> quad1(k1, a1, b1);
-	AlgConstraint<ldouble> *g1 = new AlgConstraint<ldouble>(&quad1, 4);
-	g1->Print();
+	AlgConstraint<ldouble> g1(&quad1, 4);
+	g1.Print();
 
-	delete objectiveFunction;	
-	delete g1;
+	
+	OptimizationSolver<ldouble>* cpSolver = new CuttingPlaneMethodWithFeasibleSetApproximationSolver<ldouble>(2, 0.0001);
+	cpSolver->SetObjectiveFunction(objectiveFunction);
+	delete cpSolver;
 	return 0;
 }

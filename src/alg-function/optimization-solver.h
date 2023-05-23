@@ -17,13 +17,22 @@ private:
 	vector<AlgConstraint<T>*> constraints;
 	vector<T> currPoint, prevPoint;
 	T currValue, prevValue;
-public:
-	/*OptimizationSolver<T>(AlgFunction<T>* objectiveFunction, vector<AlgConstraint<T>*> constraints);
-	~OptimizationSolver<T>();*/
+public:	
 	OptimizationSolver(unsigned int dimension, T epsilon);
+	virtual ~OptimizationSolver();
 	void SetObjectiveFunction(AlgFunction<T>* objectiveFunction);
 	void SetConstraints(vector<AlgConstraint<T>*> constraints);
 };
+
+template<typename T>
+class CuttingPlaneMethodWithFeasibleSetApproximationSolver : public OptimizationSolver<T>
+{
+public:
+	CuttingPlaneMethodWithFeasibleSetApproximationSolver(unsigned int dimension, T epsilon);
+	~CuttingPlaneMethodWithFeasibleSetApproximationSolver();
+};
+
+
 
 
 

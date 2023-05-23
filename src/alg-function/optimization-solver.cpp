@@ -15,6 +15,15 @@ OptimizationSolver<T>::OptimizationSolver(unsigned int dimension, T epsilon)
 }
 
 template<typename T>
+OptimizationSolver<T>::~OptimizationSolver()
+{
+	size_t size = this->constraints.size();
+	for (size_t i = 0; i < size; i++)
+		delete this->constraints[i];
+	delete this->objectiveFunction;
+}
+
+template<typename T>
 void OptimizationSolver<T>::SetObjectiveFunction(AlgFunction<T>* objectiveFunction)
 {
 	this->objectiveFunction = objectiveFunction;
@@ -23,8 +32,21 @@ void OptimizationSolver<T>::SetObjectiveFunction(AlgFunction<T>* objectiveFuncti
 template<typename T>
 void OptimizationSolver<T>::SetConstraints(vector<AlgConstraint<T>*> constraints)
 {	
-	/*this->constraints = constraints == NULL
-		? constraints
-		: {};*/
-	this->constraints = {};
+	if (constraints == NULL) {
+		this->constraints = {};
+		return;
+	}	
+	this->constraints = constraints;
+}
+
+
+template<typename T>
+CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::CuttingPlaneMethodWithFeasibleSetApproximationSolver(unsigned int dimension, T epsilon): OptimizationSolver<T>(dimension, epsilon)
+{
+}
+
+template<typename T>
+CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::~CuttingPlaneMethodWithFeasibleSetApproximationSolver()
+{
+	//OptimizationSolver<T>::~OptimizationSolver();
 }
