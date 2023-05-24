@@ -69,20 +69,9 @@ bool CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::IsStopped()
 	T sum = T();
 	for (size_t i = 0; i < this->dimension; i++)
 		sum += (this->currPoint[i] - this->prevPoint[i]) * (this->currPoint[i] - this->prevPoint[i]);
-	cout << "\ncurrPoint: ";
-	for (size_t i = 0; i < this->dimension; i++)
-		cout << this->currPoint[i] << " ";
-	cout << "\nprevPoint: ";
-	for (size_t i = 0; i < this->dimension; i++)
-		cout << this->prevPoint[i] << " ";
-	cout << "\ndistance: " << sqrt(sum);
-	return sqrt(sum) <= this->eps;
-
-
 	
-	cout << "\ncurr: " << this->currValue << "  prev: " << this->prevValue << " eps: " << this->eps;
-	cout << "abs: " << abs(this->currValue - this->prevValue);
-	return abs(this->currValue - this->prevValue) <= this->eps;
+	//cout << "\ndistance: " << sqrt(sum);
+	return sqrt(sum) <= this->eps;
 }
 
 template<typename T>
@@ -110,18 +99,18 @@ void CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::Minimize()
 	real_1d_array linearObjective;
 	vector<T> cv = this->objectiveFunction->SubgradientAt(this->currPoint);
 	linearObjective.setcontent(this->dimension, &cv[0]);
-	cout << "linearObjective: ";
-	printArray(this->dimension, &cv[0]);
+	//cout << "linearObjective: ";
+	//printArray(this->dimension, &cv[0]);
 
 	real_1d_array bndl;
 	bndl.setcontent(this->dimension, &this->lowerBox[0]);
-	cout << "\nlowerBox: ";
-	printArray(this->dimension, &this->lowerBox[0]);
+	//cout << "\nlowerBox: ";
+	//printArray(this->dimension, &this->lowerBox[0]);
 
 	real_1d_array bndu;
 	bndu.setcontent(this->dimension, &this->upperBox[0]);
-	cout << "\nupperBox: ";
-	printArray(this->dimension, &this->upperBox[0]);
+	//cout << "\nupperBox: ";
+	//printArray(this->dimension, &this->upperBox[0]);
 
 	minlpstate state;
 	minlpreport rep;
@@ -129,8 +118,9 @@ void CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::Minimize()
 	minlpcreate(this->dimension, state);
 	minlpsetcost(state, linearObjective);
 	minlpsetbc(state, bndl, bndu);
-	minlpsetalgodss(state, this->eps);
-
+	minlpsetalgodss(state, this->eps/1000);
+	int step = 0;
+	const clock_t begin_time = clock();
 	do
 	{
 		this->prevPoint.clear();
@@ -142,8 +132,7 @@ void CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::Minimize()
 		real_1d_array x;
 		minlpoptimize(state);
 		minlpresults(state, x, rep);
-
-		//cout << x.tostring(3).c_str();
+		
 		this->currPoint.clear();
 		for (size_t i = 0; i < this->dimension; i++)
 			this->currPoint.push_back(x[i]);
@@ -164,20 +153,28 @@ void CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::Minimize()
 
 			ae_int_t* a = new ae_int_t[this->dimension];
 			for (size_t ai = 0; ai < this->dimension; ai++)
-				a[ai] = ai;
+				a[ai] = ai;			
 
 			integer_1d_array idx;
 			idx.setcontent(this->dimension, a);		
 
 			real_1d_array vala;
 			vala.setcontent(this->dimension, &constr->SubgradientAt(point)[0]);
-			minlpaddlc2(state, idx, vala, 2, -HUGE_VAL, b);
-		}		
+			minlpaddlc2(state, idx, vala, this->dimension, -HUGE_VAL, b);
+		}	
+		step++;
 	} while (!this->IsStopped());
 
+	cout << "\nCuttingPlaneMethodWithFeasibleSetApproximationSolver";	
+	cout << "\ndim: " << this->dimension;
+	cout << "\nused constriants: " << this->constraints.size();
 	cout << "\nsolution: ";
 	for (size_t i = 0; i < this->dimension; i++)
 		cout << this->currPoint[i] << " ";
+	cout << "\noptimal value: " << this->currValue;
+	cout << "\nsteps: " << step;
+	cout << "\nseconds: " << float(clock() - begin_time) / CLOCKS_PER_SEC;
+
 
 
 	

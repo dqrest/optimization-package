@@ -53,10 +53,9 @@ void test1(size_t dim)
 		vector<ldouble> a = initVector(dim, 1);
 
 		AlgConstraint<ldouble>* g1 = new AlgConstraint<ldouble>(new AlgSimpleQuadraticFunction<ldouble>(k, a, bPlus), 4);
-		//AlgConstraint<ldouble>* g2 = new AlgConstraint<ldouble>(new AlgSimpleQuadraticFunction<ldouble>(k, a, bMinus), 4);
+		AlgConstraint<ldouble>* g2 = new AlgConstraint<ldouble>(new AlgSimpleQuadraticFunction<ldouble>(k, a, bMinus), 4);
 		constraints.push_back(g1);
-		//constraints.push_back(g2);
-		break;
+		constraints.push_back(g2);		
 	}
 
 	OptimizationSolver<ldouble>* cpSolver = new CuttingPlaneMethodWithFeasibleSetApproximationSolver<ldouble>(dim, 0.00000001);
@@ -67,36 +66,13 @@ void test1(size_t dim)
 
 	cpSolver->Minimize();
 
-
-
-	delete objectiveFunction;
+	delete cpSolver;
 }
 
 int main()
 {
-	test1(2);
+	test1(100);
 	return 0;
-	vector<ldouble> v = { 0, -1 };
-	AlgLinearFunction<ldouble>* objectiveFunction = new AlgLinearFunction<ldouble>(v);
-	objectiveFunction->Print();
-	cout << "\n";
-
-	vector<ldouble> upperBox = { UPPER_BOX, UPPER_BOX };
-	vector<ldouble> lowerBox = { LOWER_BOX, LOWER_BOX };
-	vector<ldouble> k1 = { 1, 1 };
-	vector<ldouble> a1 = { 1, 1 };
-	vector<ldouble> b1 = { -1, 0 };
-	AlgConstraint<ldouble>* g1 = new AlgConstraint<ldouble>(new AlgSimpleQuadraticFunction<ldouble>(k1, a1, b1), 1);
-	vector<AlgConstraint<ldouble>*> constraints = { g1 };
-
-	OptimizationSolver<ldouble>* cpSolver = new CuttingPlaneMethodWithFeasibleSetApproximationSolver<ldouble>(2, 0.001);
-	cpSolver->SetObjectiveFunction(objectiveFunction);
-	cpSolver->SetConstraints(constraints);
-	cpSolver->SetLowerBox(lowerBox);
-	cpSolver->SetUpperBox(upperBox);
-
-	cpSolver->Minimize();
-
-	delete cpSolver;
-	return 0;
+	
+	
 }
