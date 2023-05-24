@@ -66,7 +66,18 @@ CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::~CuttingPlaneMethodWith
 template<typename T>
 bool CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::IsStopped()
 {
+	T sum = T();
+	for (size_t i = 0; i < this->dimension; i++)
+		sum += (this->currPoint[i] - this->prevPoint[i]) * (this->currPoint[i] - this->prevPoint[i]);
+	return sqrt(sum) <= this->eps;
+	cout << "\ncurrPoint: ";
+	for (size_t i = 0; i < this->dimension; i++)
+		cout << this->currPoint[i] << " ";
+	cout << "\nprevPoint: ";
+	for (size_t i = 0; i < this->dimension; i++)
+		cout << this->prevPoint[i] << " ";	
 	cout << "\ncurr: " << this->currValue << "  prev: " << this->prevValue << " eps: " << this->eps;
+	cout << "abs: " << abs(this->currValue - this->prevValue);
 	return abs(this->currValue - this->prevValue) <= this->eps;
 }
 
@@ -141,6 +152,10 @@ void CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::Minimize()
 		for (size_t i = 0; i < activeSets.size(); i++) {
 			AlgConstraint<T>* constr = this->constraints[activeSets[i]];
 			vector<T> point = this->currPoint;
+
+			vector<T> s = constr->SubgradientAt(point);
+			T fb = constr->ValueAt(point);
+			T sx = innerProduct(point, constr->SubgradientAt(point));
 			T b = innerProduct(point, constr->SubgradientAt(point)) - constr->ValueAt(point);
 
 			ae_int_t* a = new ae_int_t[this->dimension];
@@ -153,70 +168,13 @@ void CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::Minimize()
 			real_1d_array vala;
 			vala.setcontent(this->dimension, &constr->SubgradientAt(point)[0]);
 			minlpaddlc2(state, idx, vala, 2, -HUGE_VAL, b);
-		}
-
-		//break;
+		}		
 	} while (!this->IsStopped());
 
-
-	//vector<size_t> activeSets = this->GetActiveConstraintsToCut()
-
-
-	/*while (!this->IsStopped())
-	{
-
-	}*/
+	cout << "\nsolution: ";
+	for (size_t i = 0; i < this->dimension; i++)
+		cout << this->currPoint[i] << " ";
 
 
-
-	/*real_1d_array linearObjective;
-	vector<T> cv = this->objectiveFunction->SubgradientAt(this->currPoint);
-	linearObjective.setcontent(this->dimension, &cv[0]);
-	cout << "linearObjective: ";
-	printArray(this->dimension, &cv[0]);
-
-
-	real_1d_array bndl;
-	bndl.setcontent(this->dimension, &this->lowerBox[0]);
-	cout << "\nlowerBox: ";
-	printArray(this->dimension, &this->lowerBox[0]);
-
-	real_1d_array bndu;
-	bndu.setcontent(this->dimension, &this->upperBox[0]);
-	cout << "\nupperBox: ";
-	printArray(this->dimension, &this->upperBox[0]);
-
-	minlpstate state;
-	minlpreport rep;
-
-	minlpcreate(this->dimension, state);
-	minlpsetcost(state, linearObjective);
-	minlpsetbc(state, bndl, bndu);
-	minlpsetalgodss(state, this->eps);
-
-	real_1d_array x;
-	minlpoptimize(state);
-	minlpresults(state, x, rep);
-	cout << x.tostring(3).c_str();
-
-	ae_int_t* a = new ae_int_t[2]{ 0, 1 };
-	integer_1d_array idx;
-	idx.setcontent(this->dimension, a);
-
-	long double* v = new long double[2]{ 1, 1 };
-	real_1d_array vala;
-	vala.setcontent(this->dimension, v);
-
-
-	minlpaddlc2(state, idx, vala, 2, -HUGE_VAL, 1);
-	minlpoptimize(state);
-	minlpresults(state, x, rep);
-	cout << x.tostring(3).c_str();
-
-	while (!this->IsStopped())
-	{
-		this->currValue = this->currValue / 2;
-		this->prevValue = this->prevValue / 2;
-		break;
-	}*/
+	
 }
