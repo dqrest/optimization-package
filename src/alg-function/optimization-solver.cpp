@@ -65,17 +65,21 @@ CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::~CuttingPlaneMethodWith
 
 template<typename T>
 bool CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::IsStopped()
-{
+{	
 	T sum = T();
 	for (size_t i = 0; i < this->dimension; i++)
 		sum += (this->currPoint[i] - this->prevPoint[i]) * (this->currPoint[i] - this->prevPoint[i]);
-	return sqrt(sum) <= this->eps;
 	cout << "\ncurrPoint: ";
 	for (size_t i = 0; i < this->dimension; i++)
 		cout << this->currPoint[i] << " ";
 	cout << "\nprevPoint: ";
 	for (size_t i = 0; i < this->dimension; i++)
-		cout << this->prevPoint[i] << " ";	
+		cout << this->prevPoint[i] << " ";
+	cout << "\ndistance: " << sqrt(sum);
+	return sqrt(sum) <= this->eps;
+
+
+	
 	cout << "\ncurr: " << this->currValue << "  prev: " << this->prevValue << " eps: " << this->eps;
 	cout << "abs: " << abs(this->currValue - this->prevValue);
 	return abs(this->currValue - this->prevValue) <= this->eps;
@@ -139,7 +143,7 @@ void CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::Minimize()
 		minlpoptimize(state);
 		minlpresults(state, x, rep);
 
-		cout << x.tostring(3).c_str();
+		//cout << x.tostring(3).c_str();
 		this->currPoint.clear();
 		for (size_t i = 0; i < this->dimension; i++)
 			this->currPoint.push_back(x[i]);

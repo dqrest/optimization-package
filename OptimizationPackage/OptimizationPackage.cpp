@@ -11,13 +11,71 @@
 
 typedef  long double ldouble;
 //const ldouble UPPER_BOX = pow(10, 5), LOWER_BOX = -(10, 5);
-const ldouble UPPER_BOX = 3, LOWER_BOX = -3;
+const ldouble UPPER_BOX = 100, LOWER_BOX = -100;
 
 using namespace std;
 using namespace alglib;
 
+
+vector<ldouble> initVector(size_t dim, ldouble elem)
+{
+	vector<ldouble> zero = {};
+	for (size_t i = 0; i < dim; i++)
+		zero.push_back(elem);
+	return zero;
+}
+
+void test1(size_t dim)
+{
+	// init objective function
+	vector<ldouble> c = initVector(dim, -1);
+	//c[0] = -1;
+	//for (size_t i = 0; i < dim; i++)
+	//  c.push_back(-1);
+	AlgLinearFunction<ldouble>* objectiveFunction = new AlgLinearFunction<ldouble>(c);
+
+	// init box constraints
+	vector<ldouble> upper = { };
+	vector<ldouble> lower = { };
+	for (size_t i = 0; i < dim; i++) {
+		upper.push_back(UPPER_BOX);
+		lower.push_back(LOWER_BOX);
+	}
+
+	// init simple quadratic constraints
+	vector<AlgConstraint<ldouble>*> constraints = {};
+	for (size_t i = 0; i < dim; i++) {
+		vector<ldouble> bPlus = initVector(dim, 0);
+		vector<ldouble> bMinus = initVector(dim, 0);
+		bPlus[i] = 1;
+		bMinus[i] = -1;
+		vector<ldouble> k = initVector(dim, 1);
+		vector<ldouble> a = initVector(dim, 1);
+
+		AlgConstraint<ldouble>* g1 = new AlgConstraint<ldouble>(new AlgSimpleQuadraticFunction<ldouble>(k, a, bPlus), 4);
+		//AlgConstraint<ldouble>* g2 = new AlgConstraint<ldouble>(new AlgSimpleQuadraticFunction<ldouble>(k, a, bMinus), 4);
+		constraints.push_back(g1);
+		//constraints.push_back(g2);
+		break;
+	}
+
+	OptimizationSolver<ldouble>* cpSolver = new CuttingPlaneMethodWithFeasibleSetApproximationSolver<ldouble>(dim, 0.00000001);
+	cpSolver->SetObjectiveFunction(objectiveFunction);
+	cpSolver->SetConstraints(constraints);
+	cpSolver->SetLowerBox(lower);
+	cpSolver->SetUpperBox(upper);
+
+	cpSolver->Minimize();
+
+
+
+	delete objectiveFunction;
+}
+
 int main()
 {
+	test1(2);
+	return 0;
 	vector<ldouble> v = { 0, -1 };
 	AlgLinearFunction<ldouble>* objectiveFunction = new AlgLinearFunction<ldouble>(v);
 	objectiveFunction->Print();
@@ -27,7 +85,7 @@ int main()
 	vector<ldouble> lowerBox = { LOWER_BOX, LOWER_BOX };
 	vector<ldouble> k1 = { 1, 1 };
 	vector<ldouble> a1 = { 1, 1 };
-	vector<ldouble> b1 = { -1, 0 };	
+	vector<ldouble> b1 = { -1, 0 };
 	AlgConstraint<ldouble>* g1 = new AlgConstraint<ldouble>(new AlgSimpleQuadraticFunction<ldouble>(k1, a1, b1), 1);
 	vector<AlgConstraint<ldouble>*> constraints = { g1 };
 
