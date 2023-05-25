@@ -1,0 +1,80 @@
+1.1) CuttingPlaneMethodWithFeasibleSetApproximationSolver
+dim: 2
+used constriants: 4
+solution: 0.822876 0.822876
+optimal value: -1.64575
+steps: 11
+seconds: 0.013
+1.2) CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver
+dim: 2
+used constriants: 4
+solution: 0.822876 0.822876
+optimal value: -1.64575
+steps: 17
+seconds: 0.026
+
+2.1) CuttingPlaneMethodWithFeasibleSetApproximationSolver
+dim: 5
+used constriants: 10
+solution: 0.6 0.6 0.6 0.6 0.6
+optimal value: -3
+steps: 12
+seconds: 0.027
+2.2) CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver
+dim: 5
+used constriants: 10
+solution: 0.6 0.6 0.6 0.6 0.6
+optimal value: -3
+steps: 53
+seconds: 0.229
+
+3.1) CuttingPlaneMethodWithFeasibleSetApproximationSolver
+dim: 10
+used constriants: 20
+solution: 0.456776 0.456776 0.456776 0.456776 0.456776 0.456776 0.456776 0.456776 0.456776 0.456776
+optimal value: -4.56776
+steps: 12
+seconds: 0.051
+3.2) CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver
+dim: 10
+used constriants: 20
+solution: 0.456776 0.456776 0.456776 0.456776 0.456776 0.456776 0.456776 0.456776 0.456776 0.456776
+optimal value: -4.56776
+steps: 182
+seconds: 5.113
+
+4.1) CuttingPlaneMethodWithFeasibleSetApproximationSolver
+dim: 25
+used constriants: 50
+solution: 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712
+optimal value: -7.7178
+steps: 14
+seconds: 0.224
+4.2) CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver
+dim: 25
+used constriants: 50
+solution: 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712 0.308712
+optimal value: -7.7178
+steps: 717
+seconds: 844.571
+
+
+
+
+
+
+
+
+1) CuttingPlaneMethodWithFeasibleSetApproximationSolver
+   dim: 2
+   used constriants: 4
+   solution: 0.822876 0.822876
+   optimal value: -1.64575
+   steps: 11
+   seconds: 0.012
+) CuttingPlaneMethodWithFeasibleSetApproximationSolver
+   dim: 1000
+   used constriants: 2000
+   record value: -53.7814
+   steps: 15
+   seconds: 4155.01

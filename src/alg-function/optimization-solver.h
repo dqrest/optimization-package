@@ -24,7 +24,7 @@ public:
 	OptimizationSolver(unsigned int dimension, T epsilon);
 	virtual ~OptimizationSolver();
 	void SetObjectiveFunction(AlgFunction<T>* objectiveFunction);
-	void SetConstraints(vector<AlgConstraint<T>*> constraints);
+	virtual void SetConstraints(vector<AlgConstraint<T>*> constraints);
 	void SetLowerBox(vector<T> lb);
 	void SetUpperBox(vector<T> ub);
 	virtual void Minimize() = 0;
@@ -34,13 +34,28 @@ public:
 template<typename T>
 class CuttingPlaneMethodWithFeasibleSetApproximationSolver : public OptimizationSolver<T>
 {
+protected:
+	size_t step = 0;
 public:
 	CuttingPlaneMethodWithFeasibleSetApproximationSolver(unsigned int dimension, T epsilon);
 	~CuttingPlaneMethodWithFeasibleSetApproximationSolver();
-	void Minimize();
+	virtual void Minimize();
 	virtual bool IsStopped();
+	virtual vector<size_t> GetActiveConstraintsToCut(vector<T> point);		
+};
+
+template<typename T>
+class CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver : public CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>
+{
+protected:
+	vector<size_t> usedConstraintsIdx = {};
+	vector<size_t> unusedConstraintsIdx = {};
+public:
+	CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver(unsigned int dimension, T epsilon);
+	virtual ~CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver();
+	virtual void Minimize();	
 	virtual vector<size_t> GetActiveConstraintsToCut(vector<T> point);	
-	virtual void CreateCuttingPlane(vector<T> point, AlgConstraint<T>* constraint);
+	void SetConstraints(vector<AlgConstraint<T>*> constraints);
 };
 
 template<typename T>

@@ -65,12 +65,12 @@ CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::~CuttingPlaneMethodWith
 
 template<typename T>
 bool CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::IsStopped()
-{	
+{
 	T sum = T();
 	for (size_t i = 0; i < this->dimension; i++)
 		sum += (this->currPoint[i] - this->prevPoint[i]) * (this->currPoint[i] - this->prevPoint[i]);
-	
-	//cout << "\ndistance: " << sqrt(sum);
+
+	cout << "\ndistance: " << sqrt(sum);
 	return sqrt(sum) <= this->eps;
 }
 
@@ -78,18 +78,13 @@ template<typename T>
 vector<size_t> CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::GetActiveConstraintsToCut(vector<T> point)
 {
 	vector<size_t> idx = {};
-	size_t size = this->constraints.size();
-	for (size_t i = 0; i < size; i++) {		
-		if (!this->constraints[i]->BelongsTo(point)) 			
-			idx.push_back(i);		
+
+	int size = this->constraints.size();
+	for (int i = size - 1; i >= 0; i--) {
+		if (!this->constraints[i]->BelongsTo(point))
+			idx.push_back(i);
 	}
 	return idx;
-}
-
-template<typename T>
-void CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::CreateCuttingPlane(vector<T> point, AlgConstraint<T>* constraint)
-{
-	
 }
 
 template<typename T>
@@ -118,8 +113,8 @@ void CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::Minimize()
 	minlpcreate(this->dimension, state);
 	minlpsetcost(state, linearObjective);
 	minlpsetbc(state, bndl, bndu);
-	minlpsetalgodss(state, this->eps/1000);
-	int step = 0;
+	minlpsetalgodss(state, this->eps / 1000);
+	this->step = 0;
 	const clock_t begin_time = clock();
 	do
 	{
@@ -132,13 +127,13 @@ void CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::Minimize()
 		real_1d_array x;
 		minlpoptimize(state);
 		minlpresults(state, x, rep);
-		
+
 		this->currPoint.clear();
 		for (size_t i = 0; i < this->dimension; i++)
 			this->currPoint.push_back(x[i]);
 		this->currValue = this->objectiveFunction->ValueAt(this->currPoint);
 		vector<size_t> activeSets = this->GetActiveConstraintsToCut(this->currPoint);
-		if (activeSets.size() == 0) 
+		if (activeSets.size() == 0)
 			break;
 
 		// create cutting plane
@@ -153,29 +148,155 @@ void CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::Minimize()
 
 			ae_int_t* a = new ae_int_t[this->dimension];
 			for (size_t ai = 0; ai < this->dimension; ai++)
-				a[ai] = ai;			
+				a[ai] = ai;
 
 			integer_1d_array idx;
-			idx.setcontent(this->dimension, a);		
+			idx.setcontent(this->dimension, a);
 
 			real_1d_array vala;
 			vala.setcontent(this->dimension, &constr->SubgradientAt(point)[0]);
 			minlpaddlc2(state, idx, vala, this->dimension, -HUGE_VAL, b);
-		}	
-		step++;
+		}
+		//if (step % 20 == 0)
+		cout << "\nstep: " << this->step;
+		this->step++;
 	} while (!this->IsStopped());
 
-	cout << "\nCuttingPlaneMethodWithFeasibleSetApproximationSolver";	
+	cout << "\nCuttingPlaneMethodWithFeasibleSetApproximationSolver";
 	cout << "\ndim: " << this->dimension;
 	cout << "\nused constriants: " << this->constraints.size();
 	cout << "\nsolution: ";
 	for (size_t i = 0; i < this->dimension; i++)
 		cout << this->currPoint[i] << " ";
 	cout << "\noptimal value: " << this->currValue;
-	cout << "\nsteps: " << step;
+	cout << "\nsteps: " << this->step;
 	cout << "\nseconds: " << float(clock() - begin_time) / CLOCKS_PER_SEC;
+}
 
+template<typename T>
+CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver<T>::CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver(unsigned int dimension, T epsilon) : CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>(dimension, epsilon)
+{
+}
 
+template<typename T>
+CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver<T>::~CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver() {}
 
-	
+template<typename T>
+vector<size_t> CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver<T>::GetActiveConstraintsToCut(vector<T> point)
+{
+	vector<size_t> idx = {};
+	int size = this->usedConstraintsIdx.size();
+	for (int i = size - 1; i >= 0; i--) {
+		int ind = this->usedConstraintsIdx[i];
+		if (!this->constraints[ind]->BelongsTo(point))
+			idx.push_back(ind);
+	}	
+	size = this->unusedConstraintsIdx.size();
+	for (int i = size - 1; i >= 0; i--) {
+		int ind = this->unusedConstraintsIdx[i];
+		if (!this->constraints[ind]->BelongsTo(point)) {
+			this->usedConstraintsIdx.push_back(ind);
+			this->unusedConstraintsIdx.erase(this->unusedConstraintsIdx.begin() + ind);
+			idx.push_back(ind);
+			break;
+		}
+	}
+	return idx;
+}
+
+template<typename T>
+void CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver<T>::SetConstraints(vector<AlgConstraint<T>*> constraints)
+{
+	CuttingPlaneMethodWithFeasibleSetApproximationSolver<T>::SetConstraints(constraints);
+	this->usedConstraintsIdx.clear();
+	this->unusedConstraintsIdx.clear();
+	if (&constraints == NULL) return;
+	size_t size = constraints.size();
+	for (size_t i = 0; i < size; i++)
+		this->unusedConstraintsIdx.push_back(i);
+}
+
+template<typename T>
+void CuttingPlaneMethodWithSuccessiveUsingConstraintsSolver<T>::Minimize()
+{
+
+	real_1d_array linearObjective;
+	vector<T> cv = this->objectiveFunction->SubgradientAt(this->currPoint);
+	linearObjective.setcontent(this->dimension, &cv[0]);
+	//cout << "linearObjective: ";
+	//printArray(this->dimension, &cv[0]);
+
+	real_1d_array bndl;
+	bndl.setcontent(this->dimension, &this->lowerBox[0]);
+	//cout << "\nlowerBox: ";
+	//printArray(this->dimension, &this->lowerBox[0]);
+
+	real_1d_array bndu;
+	bndu.setcontent(this->dimension, &this->upperBox[0]);
+	//cout << "\nupperBox: ";
+	//printArray(this->dimension, &this->upperBox[0]);
+
+	minlpstate state;
+	minlpreport rep;
+
+	minlpcreate(this->dimension, state);
+	minlpsetcost(state, linearObjective);
+	minlpsetbc(state, bndl, bndu);
+	minlpsetalgodss(state, this->eps / 1000);
+	this->step = 0;
+	const clock_t begin_time = clock();
+	do
+	{
+		this->prevPoint.clear();
+		for (size_t i = 0; i < this->dimension; i++)
+			this->prevPoint.push_back(this->currPoint[i]);
+		this->prevPoint = this->currPoint;
+		this->prevValue = this->currValue;
+
+		real_1d_array x;
+		minlpoptimize(state);
+		minlpresults(state, x, rep);
+
+		this->currPoint.clear();
+		for (size_t i = 0; i < this->dimension; i++)
+			this->currPoint.push_back(x[i]);
+		this->currValue = this->objectiveFunction->ValueAt(this->currPoint);
+		vector<size_t> activeSets = this->GetActiveConstraintsToCut(this->currPoint);
+		if (activeSets.size() == 0)
+			break;
+
+		// create cutting plane
+		for (size_t i = 0; i < activeSets.size(); i++) {
+			AlgConstraint<T>* constr = this->constraints[activeSets[i]];
+			vector<T> point = this->currPoint;
+
+			vector<T> s = constr->SubgradientAt(point);
+			T fb = constr->ValueAt(point);
+			T sx = innerProduct(point, constr->SubgradientAt(point));
+			T b = innerProduct(point, constr->SubgradientAt(point)) - constr->ValueAt(point);
+
+			ae_int_t* a = new ae_int_t[this->dimension];
+			for (size_t ai = 0; ai < this->dimension; ai++)
+				a[ai] = ai;
+
+			integer_1d_array idx;
+			idx.setcontent(this->dimension, a);
+
+			real_1d_array vala;
+			vala.setcontent(this->dimension, &constr->SubgradientAt(point)[0]);
+			minlpaddlc2(state, idx, vala, this->dimension, -HUGE_VAL, b);
+		}	
+		cout << "\nstep: " << this->step;
+		this->step++;
+	} while (!this->IsStopped());
+
+	cout << "\nCuttingPlaneMethodWithSuccessiveUsingConstraintsSolver";
+	cout << "\ndim: " << this->dimension;
+	cout << "\nused constriants: " << this->usedConstraintsIdx.size();
+	cout << "\nsolution: ";
+	for (size_t i = 0; i < this->dimension; i++)
+		cout << this->currPoint[i] << " ";
+	cout << "\noptimal value: " << this->currValue;
+	cout << "\nsteps: " << this->step;
+	cout << "\nseconds: " << float(clock() - begin_time) / CLOCKS_PER_SEC;
 }
